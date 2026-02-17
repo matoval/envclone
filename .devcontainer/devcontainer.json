@@ -1,0 +1,13 @@
+{
+  "name": "envclone",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "remoteUser": "root",
+  "forwardPorts": [],
+  "postCreateCommand": "",
+  "postStartCommand": "",
+  "services": [],
+  "workspaceFolder": "~/projects",
+  "workspaceMount": "/workspace"
+}

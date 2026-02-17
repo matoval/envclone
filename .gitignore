@@ -1,0 +1,30 @@
+# Binary
+envclone
+
+# Environment and secrets
+.env
+.env.*
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+*.jks
+credentials.json
+secrets.json
+**/id_rsa
+**/id_ed25519
+
+# State files
+.local/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~

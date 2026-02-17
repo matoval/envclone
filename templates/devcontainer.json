@@ -1,0 +1,9 @@
+{
+  "name": "my-project",
+  "image": "fedora:45",
+  "remoteUser": "root",
+  "forwardPorts": [],
+  "postCreateCommand": "",
+  "postStartCommand": "",
+  "services": []
+}

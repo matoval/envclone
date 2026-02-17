@@ -1,0 +1,11 @@
+{
+  "name": "my-project",
+  "image": "fedora:45",
+  "workspaceFolder": "",
+  "workspaceMount": "/workspace",
+  "remoteUser": "root",
+  "forwardPorts": [],
+  "postCreateCommand": "",
+  "postStartCommand": "",
+  "services": []
+}
