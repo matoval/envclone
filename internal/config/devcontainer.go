@@ -12,6 +12,14 @@ type BuildConfig struct {
 	Context    string `json:"context,omitempty"`
 }
 
+type VSCodeCustomizations struct {
+	Extensions []string `json:"extensions,omitempty"`
+}
+
+type Customizations struct {
+	VSCode *VSCodeCustomizations `json:"vscode,omitempty"`
+}
+
 type DevContainer struct {
 	Name              string            `json:"name"`
 	Image             string            `json:"image,omitempty"`
@@ -26,6 +34,7 @@ type DevContainer struct {
 	Features          map[string]any    `json:"features,omitempty"`
 	RunArgs           []string          `json:"runArgs,omitempty"`
 	Services          []ServiceConfig   `json:"services,omitempty"`
+	Customizations    *Customizations   `json:"customizations,omitempty"`
 }
 
 type ServiceConfig struct {

@@ -121,9 +121,22 @@ Add services that share a network namespace with your dev container. All service
 }
 ```
 
+### Additional mounts
+
+Mount host paths into the container. Use `${localEnv:VAR}` to reference host environment variables:
+
+```json
+{
+  "mounts": [
+    "${localEnv:HOME}/.gitconfig:/root/.gitconfig",
+    "${localEnv:HOME}/.ssh:/root/.ssh"
+  ]
+}
+```
+
 ## VS Code Integration
 
-The easiest way to open VS Code in your dev container:
+Open VS Code connected to your dev container with a single command:
 
 ```bash
 envclone up
@@ -132,7 +145,21 @@ envclone code
 
 This sets up SSH in the container, injects your public key, updates `~/.ssh/config`, and launches VS Code — all in one step. Requires an SSH key in `~/.ssh/` (generate one with `ssh-keygen -t ed25519` if needed).
 
-For manual setup, you can use `ssh-config` directly:
+### Persisting VS Code extensions and auth
+
+By default, VS Code installs extensions fresh into each container. To persist extensions and their authentication across `envclone down`/`up` cycles, mount `~/.vscode-server` from the host:
+
+```json
+{
+  "mounts": [
+    "${localEnv:HOME}/.vscode-server:/root/.vscode-server"
+  ]
+}
+```
+
+Install your extensions once — they'll be there on every subsequent container.
+
+### Manual setup
 
 ```bash
 envclone up

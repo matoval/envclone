@@ -3,6 +3,7 @@ package container
 import (
 	"context"
 	"fmt"
+	"os"
 	"path/filepath"
 	"strings"
 
@@ -145,6 +146,13 @@ func (m *Manager) createDevContainer(ctx context.Context, projectName, netNSCont
 		"--network", fmt.Sprintf("container:%s", netNSContainer),
 	)
 	args = append(args, mountArgs...)
+
+	// Apply additional mounts from devcontainer.json, expanding ${localEnv:VAR} references
+	for _, mount := range m.Config.Mounts {
+		expanded := expandLocalEnv(mount)
+		args = append(args, "-v", expanded)
+	}
+
 	args = append(args, "-w", containerPath, "--init")
 	args = append(args, m.Config.RunArgs...)
 
@@ -199,6 +207,24 @@ func (m *Manager) removeExisting(ctx context.Context, projectName string) {
 		rmArgs := m.Platform.NerdctlArgs(append([]string{"rm", "-f"}, ids...)...)
 		m.Runner.Run(ctx, rmArgs[0], rmArgs[1:]...)
 	}
+}
+
+// expandLocalEnv replaces ${localEnv:VAR} references with values from the host environment.
+func expandLocalEnv(s string) string {
+	for {
+		start := strings.Index(s, "${localEnv:")
+		if start == -1 {
+			break
+		}
+		end := strings.Index(s[start:], "}")
+		if end == -1 {
+			break
+		}
+		end += start
+		varName := s[start+len("${localEnv:") : end]
+		s = s[:start] + os.Getenv(varName) + s[end+1:]
+	}
+	return s
 }
 
 // IsRunning checks if the dev container is currently running.

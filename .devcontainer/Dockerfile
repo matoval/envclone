@@ -8,4 +8,8 @@ RUN dnf install -y \
     openssh-clients \
     curl \
     jq \
+    nodejs \
+    npm \
     && dnf clean all
+
+RUN npm install -g @anthropic-ai/claude-code

@@ -70,20 +70,21 @@ var codeCmd = &cobra.Command{
 		}
 		fmt.Printf("Updated ~/.ssh/config with host envclone-%s\n", env.ProjectName)
 
-		workspaceMount := "/workspace"
-		cfg, err := config.Load(dir)
-		if err == nil && cfg.WorkspaceMount != "" {
-			workspaceMount = cfg.WorkspaceMount
-		}
-
-		hostAlias := fmt.Sprintf("envclone-%s", env.ProjectName)
-		folderURI := fmt.Sprintf("vscode-remote://ssh-remote+%s%s", hostAlias, workspaceMount)
-		fmt.Printf("Opening VS Code: %s\n", folderURI)
-
 		codePath := findVSCode()
 		if codePath == "" {
 			return fmt.Errorf("VS Code 'code' command not found\nInstall it via: VS Code > Command Palette > 'Shell Command: Install code command in PATH'")
 		}
+
+		workspaceMount := "/workspace"
+		hostAlias := fmt.Sprintf("envclone-%s", env.ProjectName)
+
+		cfg, cfgErr := config.Load(dir)
+		if cfgErr == nil && cfg.WorkspaceMount != "" {
+			workspaceMount = cfg.WorkspaceMount
+		}
+
+		folderURI := fmt.Sprintf("vscode-remote://ssh-remote+%s%s", hostAlias, workspaceMount)
+		fmt.Printf("Opening VS Code: %s\n", folderURI)
 
 		vscodeCmd := exec.CommandContext(ctx, codePath, "--folder-uri", folderURI)
 		if err := vscodeCmd.Start(); err != nil {

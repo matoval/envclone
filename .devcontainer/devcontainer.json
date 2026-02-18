@@ -7,5 +7,16 @@
   "forwardPorts": [],
   "postCreateCommand": "go mod download",
   "postStartCommand": "",
+  "mounts": [
+    "${localEnv:HOME}/.claude:/root/.claude",
+    "${localEnv:HOME}/.vscode-server:/root/.vscode-server"
+  ],
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "anthropic.claude-vscode"
+      ]
+    }
+  },
   "services": []
 }
