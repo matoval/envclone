@@ -43,8 +43,8 @@ func (m *Manager) Up(ctx context.Context) (*state.Environment, error) {
 		}
 	}
 
-	// Create shared network namespace
-	netNSID, err := network.CreateNetNS(ctx, m.Runner, m.Platform, name)
+	// Create shared network namespace with SSH port published
+	netNSID, err := network.CreateNetNS(ctx, m.Runner, m.Platform, name, m.Platform.SSHPort())
 	if err != nil {
 		return nil, err
 	}
@@ -199,6 +199,17 @@ func (m *Manager) removeExisting(ctx context.Context, projectName string) {
 		rmArgs := m.Platform.NerdctlArgs(append([]string{"rm", "-f"}, ids...)...)
 		m.Runner.Run(ctx, rmArgs[0], rmArgs[1:]...)
 	}
+}
+
+// IsRunning checks if the dev container is currently running.
+func (m *Manager) IsRunning(ctx context.Context, env *state.Environment) (bool, error) {
+	devContainer := fmt.Sprintf("envclone-%s-dev", env.ProjectName)
+	args := m.Platform.NerdctlArgs("inspect", "--format", "{{.State.Running}}", devContainer)
+	out, err := m.Runner.Run(ctx, args[0], args[1:]...)
+	if err != nil {
+		return false, nil
+	}
+	return strings.TrimSpace(out) == "true", nil
 }
 
 func (m *Manager) Down(ctx context.Context, env *state.Environment) error {

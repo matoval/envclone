@@ -5,9 +5,7 @@
   },
   "remoteUser": "root",
   "forwardPorts": [],
-  "postCreateCommand": "",
+  "postCreateCommand": "go mod download",
   "postStartCommand": "",
-  "services": [],
-  "workspaceFolder": "~/projects",
-  "workspaceMount": "/workspace"
+  "services": []
 }

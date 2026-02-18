@@ -42,6 +42,7 @@ envclone shell
 | `envclone shell` | Open a bash shell in the dev container |
 | `envclone exec <cmd>` | Run a command in the dev container |
 | `envclone status` | Show running containers for the project |
+| `envclone code` | Open VS Code connected to the dev container via SSH |
 | `envclone ssh-config` | Print SSH config block for VS Code Remote-SSH |
 
 ## Configuration
@@ -121,6 +122,17 @@ Add services that share a network namespace with your dev container. All service
 ```
 
 ## VS Code Integration
+
+The easiest way to open VS Code in your dev container:
+
+```bash
+envclone up
+envclone code
+```
+
+This sets up SSH in the container, injects your public key, updates `~/.ssh/config`, and launches VS Code — all in one step. Requires an SSH key in `~/.ssh/` (generate one with `ssh-keygen -t ed25519` if needed).
+
+For manual setup, you can use `ssh-config` directly:
 
 ```bash
 envclone up
